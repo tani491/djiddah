@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id                 String   @id @default(cuid())
+  title              String
+  description        String
+  category           String   // "iphone", "gadget", "accessoire"
+  subCategory        String?  // "coque", "protecteur", "chargeur", "cable", "ecouteur", "bracelet", etc.
+  price              Int      // Price in FCFA
+  discountPercentage Int?     // e.g. 10, 20, 30 — percentage off
+  promoLabel         String?  // e.g. "PROMO", "SOLDE", "VENTE FLASH"
+  images             String   // JSON array of image paths
+  storage            String?  // e.g. "128GB", "256GB", "512GB"
+  batteryHealth      String?  // e.g. "100%", "95%"
+  condition          String?  // "Neuf" or "Reconditionné"
+  color              String?  // e.g. "Noir", "Blanc", "Bleu"
+  inStock            Boolean  @default(true)
+  featured           Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model HeroSlide {
+  id        String   @id @default(cuid())
+  title     String   // Display label (e.g. "iPhone 15 Pro Max")
+  image     String   // Image path (e.g. "/images/products/iphone15pro.png")
+  alt       String   // Alt text for accessibility
+  order     Int      @default(0) // Display order (lower = first)
+  active    Boolean  @default(true) // Whether the slide is visible
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  type      String   // "page_view", "product_view", "whatsapp_click", "cart_add", "repair_click"
+  page      String?  // e.g. "/", "/shop", "/product/xxx"
+  productId String?  // Related product ID (if applicable)
+  metadata  String?  // JSON string for extra data (product title, etc.)
+  createdAt DateTime @default(now())
+}
