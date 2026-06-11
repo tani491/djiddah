@@ -69,9 +69,9 @@ function AdminShell({ children, activeTab }: { children: React.ReactNode; active
 
   return (
     <AdminGuard>
-      <div className="min-h-screen bg-neutral-950 flex">
+      <div className="min-h-screen bg-neutral-950 flex overflow-x-hidden">
         {/* Sidebar */}
-        <aside className="w-64 bg-neutral-900 border-r border-neutral-800 p-6 hidden lg:flex flex-col">
+        <aside className="w-64 shrink-0 bg-neutral-900 border-r border-neutral-800 p-6 hidden lg:flex flex-col">
           <div className="flex items-center gap-2 mb-8">
             <span className="text-sm font-semibold tracking-tight text-white">DJIDAH</span>
             <span className="text-sm font-light tracking-tight text-neutral-600">ADMIN</span>
@@ -104,16 +104,16 @@ function AdminShell({ children, activeTab }: { children: React.ReactNode; active
         </aside>
 
         {/* Main */}
-        <div className="flex-1 flex flex-col">
+        <div className="min-w-0 flex-1 flex flex-col">
           {/* Mobile Header */}
-          <div className="lg:hidden flex items-center justify-between p-4 border-b border-neutral-800">
-            <span className="text-sm font-semibold text-white">ADMIN</span>
-            <div className="flex items-center gap-2">
+          <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between gap-3 p-3 sm:p-4 border-b border-neutral-800 bg-neutral-950/95 backdrop-blur">
+            <span className="shrink-0 text-sm font-semibold text-white">ADMIN</span>
+            <div className="flex min-w-0 items-center gap-1 overflow-x-auto">
               {navItems.map((item) => (
                 <Link
                   key={item.id}
                   href={item.href}
-                  className={`p-2 rounded-lg ${
+                  className={`shrink-0 p-2 rounded-lg ${
                     activeTab === item.id ? "bg-neutral-800 text-white" : "text-neutral-500"
                   }`}
                 >
@@ -122,14 +122,14 @@ function AdminShell({ children, activeTab }: { children: React.ReactNode; active
               ))}
               <button
                 onClick={() => signOut({ callbackUrl: "/admin/login" })}
-                className="p-2 text-neutral-500 hover:text-red-400"
+                className="shrink-0 p-2 text-neutral-500 hover:text-red-400"
               >
                 <LogOut className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          <main className="flex-1 p-6 lg:p-8 overflow-y-auto">{children}</main>
+          <main className="min-w-0 flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">{children}</main>
         </div>
       </div>
     </AdminGuard>
@@ -291,10 +291,10 @@ function HeroTab() {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
+    <div className="mx-auto w-full max-w-7xl">
+      <div className="flex flex-col gap-4 mb-8 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-white">Hero Section</h1>
+          <h1 className="text-xl font-semibold text-white sm:text-2xl">Hero Section</h1>
           <p className="text-sm text-neutral-500 mt-1">
             Gérez les produits qui apparaissent dans le carrousel de la page d&apos;accueil
           </p>
@@ -304,7 +304,7 @@ function HeroTab() {
             setEditSlide(null);
             setShowForm(true);
           }}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-neutral-900 text-sm font-medium rounded-lg hover:bg-neutral-200 transition-colors"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-neutral-900 transition-colors hover:bg-neutral-200 sm:w-auto"
         >
           <Plus className="w-4 h-4" />
           Ajouter un slide
@@ -327,7 +327,7 @@ function HeroTab() {
       {loading ? (
         <div className="space-y-3">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-neutral-900 h-20 rounded-xl animate-pulse" />
+            <div key={i} className="h-32 animate-pulse rounded-xl bg-neutral-900 sm:h-20" />
           ))}
         </div>
       ) : slides.length === 0 ? (
@@ -343,24 +343,24 @@ function HeroTab() {
             .map((slide, index) => (
               <div
                 key={slide.id}
-                className={`bg-neutral-900 border rounded-xl p-4 flex items-center gap-4 transition-colors ${
+                className={`flex flex-col gap-4 rounded-xl border bg-neutral-900 p-4 transition-colors sm:flex-row sm:items-center ${
                   slide.active ? "border-neutral-800" : "border-neutral-800/50 opacity-60"
                 }`}
               >
                 {/* Grip + Order */}
-                <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
+                <div className="flex shrink-0 flex-row items-center gap-2 sm:flex-col sm:gap-0.5">
                   <GripVertical className="w-4 h-4 text-neutral-600" />
                   <span className="text-[10px] text-neutral-600 font-mono">#{slide.order}</span>
                 </div>
 
                 {/* Image Preview */}
-                <div className="relative w-16 h-16 bg-neutral-800 rounded-lg flex-shrink-0 overflow-hidden">
+                <div className="relative aspect-square w-full max-w-[160px] shrink-0 overflow-hidden rounded-lg bg-neutral-800 sm:h-16 sm:w-16">
                   <Image
                     src={slide.image}
                     alt={slide.alt}
                     fill
                     className="object-contain p-1"
-                    sizes="64px"
+                    sizes="(max-width: 640px) 160px, 64px"
                   />
                 </div>
 
@@ -372,7 +372,7 @@ function HeroTab() {
 
                 {/* Status */}
                 <span
-                  className={`text-xs px-2.5 py-1 rounded-full flex-shrink-0 ${
+                  className={`w-fit shrink-0 rounded-full px-2.5 py-1 text-xs ${
                     slide.active
                       ? "bg-green-500/10 text-green-400"
                       : "bg-neutral-800 text-neutral-500"
@@ -382,12 +382,12 @@ function HeroTab() {
                 </span>
 
                 {/* Actions */}
-                <div className="flex items-center gap-1 flex-shrink-0">
+                <div className="grid w-full shrink-0 grid-cols-5 gap-1 sm:flex sm:w-auto sm:items-center">
                   {/* Move Up */}
                   <button
                     onClick={() => moveSlide(slide, "up")}
                     disabled={index === 0}
-                    className="p-1.5 text-neutral-500 hover:text-neutral-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="flex h-10 items-center justify-center rounded-lg bg-neutral-800/60 p-1.5 text-neutral-500 transition-colors hover:text-neutral-300 disabled:cursor-not-allowed disabled:opacity-30 sm:h-auto sm:bg-transparent"
                     title="Monter"
                   >
                     <ArrowUp className="w-4 h-4" />
@@ -396,7 +396,7 @@ function HeroTab() {
                   <button
                     onClick={() => moveSlide(slide, "down")}
                     disabled={index === slides.length - 1}
-                    className="p-1.5 text-neutral-500 hover:text-neutral-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="flex h-10 items-center justify-center rounded-lg bg-neutral-800/60 p-1.5 text-neutral-500 transition-colors hover:text-neutral-300 disabled:cursor-not-allowed disabled:opacity-30 sm:h-auto sm:bg-transparent"
                     title="Descendre"
                   >
                     <ArrowDown className="w-4 h-4" />
@@ -404,7 +404,7 @@ function HeroTab() {
                   {/* Toggle Active */}
                   <button
                     onClick={() => toggleActive(slide)}
-                    className="p-1.5 text-neutral-500 hover:text-neutral-300 transition-colors"
+                    className="flex h-10 items-center justify-center rounded-lg bg-neutral-800/60 p-1.5 text-neutral-500 transition-colors hover:text-neutral-300 sm:h-auto sm:bg-transparent"
                     title={slide.active ? "Désactiver" : "Activer"}
                   >
                     {slide.active ? (
@@ -419,7 +419,7 @@ function HeroTab() {
                       setEditSlide(slide);
                       setShowForm(true);
                     }}
-                    className="p-1.5 text-neutral-500 hover:text-neutral-300 transition-colors"
+                    className="flex h-10 items-center justify-center rounded-lg bg-neutral-800/60 p-1.5 text-neutral-500 transition-colors hover:text-neutral-300 sm:h-auto sm:bg-transparent"
                     title="Modifier"
                   >
                     <Edit className="w-4 h-4" />
@@ -427,7 +427,7 @@ function HeroTab() {
                   {/* Delete */}
                   <button
                     onClick={() => setDeleteId(slide.id)}
-                    className="p-1.5 text-neutral-500 hover:text-red-400 transition-colors"
+                    className="flex h-10 items-center justify-center rounded-lg bg-neutral-800/60 p-1.5 text-neutral-500 transition-colors hover:text-red-400 sm:h-auto sm:bg-transparent"
                     title="Supprimer"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -452,13 +452,13 @@ function HeroTab() {
 
       {/* Delete Confirmation Modal */}
       {deleteId && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6">
-          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 max-w-sm w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 sm:p-6">
+          <div className="w-full max-w-sm rounded-2xl border border-neutral-800 bg-neutral-900 p-5 sm:p-6">
             <h3 className="text-lg font-medium text-white mb-2">Supprimer ce slide ?</h3>
             <p className="text-sm text-neutral-500 mb-6">
               Ce slide sera retiré du carrousel de la page d&apos;accueil.
             </p>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center">
               <button
                 onClick={() => setDeleteId(null)}
                 className="flex-1 py-2.5 text-sm text-neutral-400 border border-neutral-700 rounded-lg hover:border-neutral-500 transition-colors"
@@ -568,10 +568,10 @@ function HeroSlideFormModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6">
-      <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-0 sm:items-center sm:p-6">
+      <div className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-neutral-800 bg-neutral-900 sm:rounded-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-neutral-800">
+        <div className="flex items-center justify-between border-b border-neutral-800 p-4 sm:p-6">
           <h3 className="text-lg font-medium text-white">
             {slide ? "Modifier le slide" : "Nouveau slide"}
           </h3>
@@ -581,7 +581,7 @@ function HeroSlideFormModal({
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5 p-4 sm:p-6">
           {/* Title */}
           <div>
             <label className="text-xs text-neutral-500 block mb-1.5">Titre affiché</label>
@@ -603,13 +603,13 @@ function HeroSlideFormModal({
             <label className="text-xs text-neutral-500 block mb-1.5">Image du produit</label>
             {/* Preview */}
             {form.image && (
-              <div className="relative w-32 h-32 bg-neutral-800 rounded-xl mb-3 overflow-hidden">
+              <div className="relative mb-3 aspect-square w-full max-w-xs overflow-hidden rounded-xl bg-neutral-800 sm:h-32 sm:w-32">
                 <Image
                   src={form.image}
                   alt="Aperçu"
                   fill
                   className="object-contain p-2"
-                  sizes="128px"
+                  sizes="(max-width: 640px) 320px, 128px"
                 />
                 <button
                   type="button"
@@ -665,7 +665,7 @@ function HeroSlideFormModal({
           </label>
 
           {/* Submit */}
-          <div className="flex items-center gap-3 pt-4">
+          <div className="flex flex-col-reverse gap-3 pt-4 sm:flex-row sm:items-center">
             <button
               type="button"
               onClick={onClose}
