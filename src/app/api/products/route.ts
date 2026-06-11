@@ -1,20 +1,36 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { getFallbackProducts } from "@/lib/fallback-data";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const category = searchParams.get("category");
+  const subCategory = searchParams.get("subCategory");
+  const storage = searchParams.get("storage");
+  const condition = searchParams.get("condition");
+  const color = searchParams.get("color");
+  const minPrice = searchParams.get("minPrice");
+  const maxPrice = searchParams.get("maxPrice");
+  const search = searchParams.get("search");
+  const featured = searchParams.get("featured");
+  const fallbackFilters = {
+    category,
+    subCategory,
+    storage,
+    condition,
+    color,
+    minPrice,
+    maxPrice,
+    search,
+    featured,
+  };
+
   try {
-    const { searchParams } = new URL(request.url);
-    const category = searchParams.get("category");
-    const subCategory = searchParams.get("subCategory");
-    const storage = searchParams.get("storage");
-    const condition = searchParams.get("condition");
-    const color = searchParams.get("color");
-    const minPrice = searchParams.get("minPrice");
-    const maxPrice = searchParams.get("maxPrice");
-    const search = searchParams.get("search");
-    const featured = searchParams.get("featured");
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json(getFallbackProducts(fallbackFilters));
+    }
 
     const where: Record<string, unknown> = {};
 
@@ -41,7 +57,7 @@ export async function GET(request: Request) {
     return NextResponse.json(products);
   } catch (error) {
     console.error("Error fetching products:", error);
-    return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 });
+    return NextResponse.json(getFallbackProducts(fallbackFilters));
   }
 }
 

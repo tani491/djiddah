@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { getFallbackHeroSlides } from "@/lib/fallback-data";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -7,12 +8,21 @@ import { authOptions } from "@/lib/auth";
 export async function GET(req: NextRequest) {
   const activeOnly = req.nextUrl.searchParams.get("active") === "true";
 
-  const slides = await db.heroSlide.findMany({
-    where: activeOnly ? { active: true } : undefined,
-    orderBy: { order: "asc" },
-  });
+  try {
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json(getFallbackHeroSlides({ activeOnly }));
+    }
 
-  return NextResponse.json(slides);
+    const slides = await db.heroSlide.findMany({
+      where: activeOnly ? { active: true } : undefined,
+      orderBy: { order: "asc" },
+    });
+
+    return NextResponse.json(slides);
+  } catch (error) {
+    console.error("Error fetching hero slides:", error);
+    return NextResponse.json(getFallbackHeroSlides({ activeOnly }));
+  }
 }
 
 // POST /api/hero-slides — create a new hero slide

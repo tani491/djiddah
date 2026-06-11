@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { getFallbackProductById } from "@/lib/fallback-data";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -7,8 +8,17 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
+
   try {
-    const { id } = await params;
+    if (!process.env.DATABASE_URL) {
+      const fallbackProduct = getFallbackProductById(id);
+      if (!fallbackProduct) {
+        return NextResponse.json({ error: "Product not found" }, { status: 404 });
+      }
+      return NextResponse.json(fallbackProduct);
+    }
+
     const product = await db.product.findUnique({ where: { id } });
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
@@ -16,6 +26,10 @@ export async function GET(
     return NextResponse.json(product);
   } catch (error) {
     console.error("Error fetching product:", error);
+    const fallbackProduct = getFallbackProductById(id);
+    if (fallbackProduct) {
+      return NextResponse.json(fallbackProduct);
+    }
     return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
   }
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { getFallbackHeroSlideById } from "@/lib/fallback-data";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -9,25 +10,43 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const slide = await db.heroSlide.findUnique({ where: { id } });
 
-  if (!slide) {
-    return NextResponse.json({ error: "Slide non trouvé." }, { status: 404 });
+  try {
+    if (!process.env.DATABASE_URL) {
+      const fallbackSlide = getFallbackHeroSlideById(id);
+      if (!fallbackSlide) {
+        return NextResponse.json({ error: "Slide non trouve." }, { status: 404 });
+      }
+      return NextResponse.json(fallbackSlide);
+    }
+
+    const slide = await db.heroSlide.findUnique({ where: { id } });
+
+    if (!slide) {
+      return NextResponse.json({ error: "Slide non trouve." }, { status: 404 });
+    }
+
+    return NextResponse.json(slide);
+  } catch (error) {
+    console.error("Error fetching hero slide:", error);
+    const fallbackSlide = getFallbackHeroSlideById(id);
+    if (fallbackSlide) {
+      return NextResponse.json(fallbackSlide);
+    }
+    return NextResponse.json({ error: "Failed to fetch hero slide" }, { status: 500 });
   }
-
-  return NextResponse.json(slide);
 }
 
-// PUT /api/hero-slides/[id] — update a hero slide
+// PUT /api/hero-slides/[id] - update a hero slide
 export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Auth check — only admins can update slides
+    // Auth check - only admins can update slides
     const session = await getServerSession(authOptions);
     if (!session) {
-      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+      return NextResponse.json({ error: "Non autorise" }, { status: 401 });
     }
 
     const { id } = await params;
@@ -57,10 +76,10 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Auth check — only admins can delete slides
+    // Auth check - only admins can delete slides
     const session = await getServerSession(authOptions);
     if (!session) {
-      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+      return NextResponse.json({ error: "Non autorise" }, { status: 401 });
     }
 
     const { id } = await params;
