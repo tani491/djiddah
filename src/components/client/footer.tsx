@@ -68,7 +68,7 @@ export default function Footer() {
 
                 {/* TikTok */}
                 <a
-                  href="https://www.tiktok.com/@djidahelectrique"
+                  href="https://www.tiktok.com/@djiddahelectronique?lang=fr"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm hover:text-white transition-colors flex items-center gap-2.5 group"
