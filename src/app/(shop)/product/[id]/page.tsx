@@ -136,6 +136,27 @@ export default function ProductDetailPage() {
 
   return (
     <div className="pt-16 min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: product.title,
+            description: product.description,
+            image: images,
+            sku: product.id,
+            category: product.category,
+            offers: {
+              "@type": "Offer",
+              price: product.price || "0",
+              priceCurrency: "XOF",
+              availability: "https://schema.org/InStock",
+              url: `https://djiddah.store/product/${product.id}`,
+            },
+          }),
+        }}
+      />
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Back */}
         <button
