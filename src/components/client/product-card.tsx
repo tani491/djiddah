@@ -99,7 +99,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
             {/* Condition Badge */}
             {product.condition && !hasDiscount && (
-              <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#E30613] text-white text-[11px] font-semibold rounded-full">
+              <span className="absolute top-3 left-3 px-2.5 py-1 bg-emerald-600 text-white text-[11px] font-semibold rounded-full">
                 {product.condition}
               </span>
             )}
@@ -108,7 +108,7 @@ export default function ProductCard({ product }: { product: Product }) {
             {hasDiscount && (
               <div className="absolute top-3 left-3 flex flex-col gap-1.5">
                 {product.promoLabel && (
-                  <span className="px-2.5 py-1 bg-[#E30613] text-white text-[11px] font-bold rounded-full uppercase tracking-wide">
+                  <span className="px-2.5 py-1 bg-emerald-600 text-white text-[11px] font-bold rounded-full uppercase tracking-wide">
                     {product.promoLabel}
                   </span>
                 )}

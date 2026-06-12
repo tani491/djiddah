@@ -106,25 +106,25 @@ function AdminShell({ children, activeTab }: { children: React.ReactNode; active
         {/* Main */}
         <div className="min-w-0 flex-1 flex flex-col">
           {/* Mobile Header */}
-          <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between gap-3 p-3 sm:p-4 border-b border-neutral-800 bg-neutral-950/95 backdrop-blur">
-            <span className="shrink-0 text-sm font-semibold text-white">ADMIN</span>
-            <div className="flex min-w-0 items-center gap-1 overflow-x-auto">
+          <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between gap-3 p-4 border-b border-neutral-800 bg-neutral-950/95 backdrop-blur">
+            <span className="shrink-0 text-base md:text-sm font-semibold text-white">ADMIN</span>
+            <div className="flex min-w-0 items-center gap-2 overflow-x-auto">
               {navItems.map((item) => (
                 <Link
                   key={item.id}
                   href={item.href}
-                  className={`shrink-0 p-2 rounded-lg ${
+                  className={`shrink-0 p-3 md:p-2 rounded-lg text-base md:text-sm ${
                     activeTab === item.id ? "bg-neutral-800 text-white" : "text-neutral-500"
                   }`}
                 >
-                  <item.icon className="w-4 h-4" />
+                  <item.icon className="w-5 h-5 md:w-4 md:h-4" />
                 </Link>
               ))}
               <button
                 onClick={() => signOut({ callbackUrl: "/admin/login" })}
-                className="shrink-0 p-2 text-neutral-500 hover:text-red-400"
+                className="shrink-0 p-3 md:p-2 text-neutral-500 hover:text-red-400"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-5 h-5 md:w-4 md:h-4" />
               </button>
             </div>
           </div>
@@ -306,7 +306,7 @@ function HeroTab() {
           }}
           className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-neutral-900 transition-colors hover:bg-neutral-200 sm:w-auto"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-5 h-5 md:w-4 md:h-4" />
           Ajouter un slide
         </button>
       </div>
@@ -390,7 +390,7 @@ function HeroTab() {
                     className="flex h-10 items-center justify-center rounded-lg bg-neutral-800/60 p-1.5 text-neutral-500 transition-colors hover:text-neutral-300 disabled:cursor-not-allowed disabled:opacity-30 sm:h-auto sm:bg-transparent"
                     title="Monter"
                   >
-                    <ArrowUp className="w-4 h-4" />
+                    <ArrowUp className="w-5 h-5 md:w-4 md:h-4" />
                   </button>
                   {/* Move Down */}
                   <button
@@ -399,7 +399,7 @@ function HeroTab() {
                     className="flex h-10 items-center justify-center rounded-lg bg-neutral-800/60 p-1.5 text-neutral-500 transition-colors hover:text-neutral-300 disabled:cursor-not-allowed disabled:opacity-30 sm:h-auto sm:bg-transparent"
                     title="Descendre"
                   >
-                    <ArrowDown className="w-4 h-4" />
+                    <ArrowDown className="w-5 h-5 md:w-4 md:h-4" />
                   </button>
                   {/* Toggle Active */}
                   <button
@@ -410,7 +410,7 @@ function HeroTab() {
                     {slide.active ? (
                       <Eye className="w-4 h-4 text-green-400" />
                     ) : (
-                      <EyeOff className="w-4 h-4" />
+                      <EyeOff className="w-5 h-5 md:w-4 md:h-4" />
                     )}
                   </button>
                   {/* Edit */}
@@ -422,7 +422,7 @@ function HeroTab() {
                     className="flex h-10 items-center justify-center rounded-lg bg-neutral-800/60 p-1.5 text-neutral-500 transition-colors hover:text-neutral-300 sm:h-auto sm:bg-transparent"
                     title="Modifier"
                   >
-                    <Edit className="w-4 h-4" />
+                    <Edit className="w-5 h-5 md:w-4 md:h-4" />
                   </button>
                   {/* Delete */}
                   <button
@@ -430,7 +430,7 @@ function HeroTab() {
                     className="flex h-10 items-center justify-center rounded-lg bg-neutral-800/60 p-1.5 text-neutral-500 transition-colors hover:text-red-400 sm:h-auto sm:bg-transparent"
                     title="Supprimer"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-5 h-5 md:w-4 md:h-4" />
                   </button>
                 </div>
               </div>
@@ -624,7 +624,7 @@ function HeroSlideFormModal({
               <label className={`inline-flex w-full items-center justify-center gap-2 px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-lg text-sm text-neutral-300 transition-colors ${
                 uploading ? "cursor-wait opacity-70" : "cursor-pointer hover:text-white hover:border-neutral-500"
               }`}>
-                <Upload className="w-4 h-4" />
+                <Upload className="w-5 h-5 md:w-4 md:h-4" />
                 {uploading ? "Upload en cours..." : form.image ? "Remplacer l'image" : "Choisir une image"}
                 <input
                   type="file"
@@ -678,7 +678,7 @@ function HeroSlideFormModal({
               disabled={saving}
               className="flex-1 py-2.5 text-sm text-neutral-900 bg-white rounded-lg hover:bg-neutral-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              <Save className="w-4 h-4" />
+              <Save className="w-5 h-5 md:w-4 md:h-4" />
               {saving ? "Enregistrement..." : "Enregistrer"}
             </button>
           </div>
@@ -747,7 +747,7 @@ function ProductsTab() {
           }}
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-neutral-900 text-sm font-medium rounded-lg hover:bg-neutral-200 transition-colors"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-5 h-5 md:w-4 md:h-4" />
           Ajouter
         </button>
       </div>
@@ -822,13 +822,13 @@ function ProductsTab() {
                             }}
                             className="p-1.5 text-neutral-500 hover:text-neutral-300 transition-colors"
                           >
-                            <Edit className="w-4 h-4" />
+                            <Edit className="w-5 h-5 md:w-4 md:h-4" />
                           </button>
                           <button
                             onClick={() => setDeleteId(p.id)}
                             className="p-1.5 text-neutral-500 hover:text-red-400 transition-colors"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-5 h-5 md:w-4 md:h-4" />
                           </button>
                         </div>
                       </td>
@@ -1230,7 +1230,7 @@ function ProductFormModal({
               <label className={`inline-flex w-full items-center justify-center gap-2 px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-lg text-sm text-neutral-300 transition-colors ${
                 uploading ? "cursor-wait opacity-70" : "cursor-pointer hover:text-white hover:border-neutral-500"
               }`}>
-                <Upload className="w-4 h-4" />
+                <Upload className="w-5 h-5 md:w-4 md:h-4" />
                 {uploading ? "Upload en cours..." : "Choisir une image"}
                 <input
                   type="file"
@@ -1257,7 +1257,7 @@ function ProductFormModal({
               disabled={saving}
               className="flex-1 py-2.5 text-sm text-neutral-900 bg-white rounded-lg hover:bg-neutral-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              <Save className="w-4 h-4" />
+              <Save className="w-5 h-5 md:w-4 md:h-4" />
               {saving ? "Enregistrement..." : "Enregistrer"}
             </button>
           </div>
@@ -1589,7 +1589,7 @@ function SettingsTab() {
               disabled={saving}
               className="w-full py-2.5 text-sm text-neutral-900 bg-white rounded-lg hover:bg-neutral-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              <Save className="w-4 h-4" />
+              <Save className="w-5 h-5 md:w-4 md:h-4" />
               {saving ? "Enregistrement..." : "Mettre à jour"}
             </button>
           </form>
